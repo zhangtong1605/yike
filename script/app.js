@@ -1,5 +1,6 @@
 //创建app应用模块
-var yike =angular.module("yike",[]);
+//调用/依赖控制器模块,在依赖中写上控制器模块 的名称
+var yike =angular.module("yike",["controller","ngRoute"]);
 // console.log(111)
 // run方法在模块创建好之后会直接执行
 yike.run(["$rootScope",function($rootScope){
@@ -9,7 +10,7 @@ yike.run(["$rootScope",function($rootScope){
 	$rootScope.collapsed=false;
 	$rootScope.toggle=function(){
 		// alert("toggle")
-		// 取反原有的值
+		// 取反原有的 值
 	$rootScope.collapsed=!$rootScope.collapsed;
 		//显示或隐藏导航栏标题内容
 		//获取当行栏中所有的dd
@@ -39,8 +40,26 @@ yike.run(["$rootScope",function($rootScope){
 		}
 	}
 }]);
+//修复路由锚点错误的bug
+yike.config(["$locationProvider",function($locationProvider){
+	$locationProvider.hashPrefix("")
+}])
+//配置路由
+yike.config(["$routeProvider",function($routeProvider){
+	$routeProvider.when("/",{
+		redirectTo:"/index"//跳转到/index处理
 
-
+	}).when("/index",{
+		templateUrl:"./views/list.html",
+		controller:"indexCtrl"
+	}).when("/older",{
+		templateUrl:"./views/older.html",
+		controller:"oldCtrl"
+	}).when("/author",{
+		templateUrl:"./views/author.html",
+		controller:"authorCtrl"
+	})
+}])
 
 
 
